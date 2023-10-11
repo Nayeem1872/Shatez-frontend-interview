@@ -1,11 +1,24 @@
 // Sidebar.js
 import React from 'react';
-import {
-    Cog6ToothIcon,
- 
-  } from "@heroicons/react/24/outline";
+import {Cog6ToothIcon} from "@heroicons/react/24/outline";
 
-export default function Sidebar({ navigation, teams }) {
+
+interface SidebarProps {
+  navigation: {
+    name: string;
+    href: string;
+    current: boolean;
+    icon: React.ElementType; // This assumes the icon is a React component
+  }[];
+  teams: {
+    id: number;
+    name: string;
+    href: string;
+    initial: string;
+    current: boolean;
+  }[];
+}
+export default function Sidebar({ navigation, teams }: SidebarProps) {
   function classNames(arg0: string, arg1: string): string | undefined {
     throw new Error('Function not implemented.');
   }
