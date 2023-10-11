@@ -3,7 +3,7 @@ import { cert } from "firebase-admin/app";
 import NextAuth, { AuthOptions } from "next-auth"
 import { Adapter } from "next-auth/adapters";
 import GoogleProvider from "next-auth/providers/google";
-import Google from "next-auth/providers/google"
+import { DefaultSession } from "next-auth"
 
 
 
@@ -15,42 +15,25 @@ export const authOptions: AuthOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
       profile(profile) {
         console.log("Google profile data:", profile);
-        return { role: profile.email==="work25355@gmail.com"  ? "admin":"user",
+        return { 
+          
+          role: profile.email==="work25355@gmail.com"  ? "admin":"user",
         id:profile.sub,
         email:profile.email,
         image:profile.picture,
-        name:profile.name
+        name:profile.name,
+        
       }
       }
     })
   ],
   callbacks: {
-    
-    session({ session, user }) {
+    async session({ session, token, user }) {
       session.user.role = user.role
-
-      console.log(session)
       return session
-      // console.log(user)
-    }
-
+    },
+   
   },
-  // callbacks: {
-  //   async jwt(token, user) {
-  //     if (user) {
-  //       token.role = user.role;
-  //       // Add other properties if necessary
-  //     }
-  //     return token;
-  //   },
-  //   async session(session, token) {
-  //     session.user.role = token.role;
-  //     // Add other properties if necessary
-  //     return session;
-  //   },
-  // },
-  
-
 
   adapter: FirestoreAdapter({
     credential: cert({
